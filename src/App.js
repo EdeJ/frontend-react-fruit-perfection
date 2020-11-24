@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Product from './Product';
 import citroenen from './assets/citroenen.jpeg';
@@ -7,6 +7,16 @@ import ijsblokjes from './assets/ijsblokjes.jpg';
 import { ReactComponent as ShoppingCart } from './assets/winkelmandje.svg';
 
 function App() {
+
+  const [messageValue, setMessageValue] = useState('');
+  const [checkedTerms, toggleCheckedTerms] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  function sendForm() {
+    console.log(`Het bericht: "${messageValue}" is succesvol verzonden.`);
+    setSubmitted(true);
+  }
+
   return (
     <>
       <nav>
@@ -21,9 +31,6 @@ function App() {
         <h1>Fruit perfection</h1>
         <button
           type="button"
-          onClick={() => {
-
-          }}
         >Shop nu</button>
       </header>
       <main>
@@ -43,6 +50,40 @@ function App() {
           description="Een ijsblokje of ijsklontje is bevroren water in de vorm van een klein blokje. Het wordt gemaakt in een diepvriezer door water in een plastic vorm te laten bevriezen."
         />
       </main>
+      <footer>
+        <div className="form-container">
+          <h2>Contactformulier</h2>
+
+          <form>
+            <input
+              className={messageValue.length > 20 ? 'input-error' : ''}
+              type="text"
+              placeholder="Typ hier jouw bericht"
+              name={messageValue}
+              onChange={(e) => setMessageValue(e.target.value)}
+            />
+            {messageValue.length > 20 && <p className="error-message">Dit bericht is te lang!</p>}
+            <label htmlFor="terms-and-conditions">
+              <input
+                type="checkbox"
+                name="terms-and-conditions"
+                id="terms-and-conditions"
+                checked={checkedTerms}
+                onChange={() => toggleCheckedTerms(!checkedTerms)}
+              />
+
+  Ik ga akkoord met de algemene voorwaarden
+</label>
+          </form>
+
+          <button
+            disabled={!checkedTerms}
+            onClick={sendForm}
+            type="submit">
+            Verstuur
+    </button>
+        </div>
+      </footer>
     </>
   );
 }
